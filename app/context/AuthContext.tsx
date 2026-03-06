@@ -8,7 +8,8 @@ export class Usuario{
 }
 
 interface AuthContexType{
-    usuario:Usuario
+    usuario:Usuario|null
+    token:string|null
     login:(usuario: Usuario, token: string) => void,
     logout:() => void
 }
@@ -21,7 +22,7 @@ export function AuthProvider({ children }: {children:ReactNode}){
     const [usuario, setUsuario] = useState<Usuario|null>(null);
     const [token, setToken] = useState<string|null>(null);
 
-    const login = (usuario: Usuario, token:string) => {
+    const login = (usuario:Usuario, token:string) => {
         setUsuario(usuario);
         setToken(token);
     }
