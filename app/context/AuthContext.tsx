@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, ReactNode, useState, useContext } from "react";
 
 export class Usuario{

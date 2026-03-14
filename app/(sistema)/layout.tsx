@@ -16,14 +16,14 @@ export default function SistemaLayout({
   const router = useRouter();
  
   // useEffect(() => {
-  //   debugger;
+  //   debugger
   //   if (usuario == null) {
  
   //     router.push("/login")
   //   }
   // })
  
-  if (usuario == null) return null;
+  // if (usuario == null) return null;
  
   return (
     <div className="flex min-h-screen bg-zinc-950 text-zinc-100">
