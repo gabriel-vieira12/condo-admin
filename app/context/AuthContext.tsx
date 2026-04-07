@@ -5,11 +5,21 @@ import { useRouter } from "next/navigation";
 
 export class Usuario {
     constructor(
-        public id: number|null,
+        public id: number | null,
         public nome: string,
         public email: string,
-        public status: string
+        public status: string,
+        public nomeCondominio: string,
+        public senha: string
     ) { }
+}
+
+export class Unidade {
+    constructor(
+        public id: number | null,
+        public bloco: string,
+        public numero: string
+    ) {}
 }
 
 interface AuthContextType {
@@ -27,30 +37,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const router = useRouter();
 
     useEffect(() => {
-        debugger;
         const usuarioRecover = Cookies.get('usuario');
         const tokenRecover = Cookies.get('token');
 
         if (usuarioRecover && tokenRecover) {
             try {
-                setUsuario(JSON.parse(usuarioRecover));
+                const user = JSON.parse(usuarioRecover);
+
+                setUsuario(
+                    new Usuario(
+                        user.id,
+                        user.nome,
+                        user.email,
+                        user.status,
+                        user.nomeCondominio,
+                        user.senha
+                    )
+                );
                 setToken(tokenRecover);
-                
-                router.push(window.location.pathname)
+
+                router.push(window.location.pathname);
             } catch (e) {
                 console.error(e);
             }
         }
-
     }, []);
 
     const login = (usuario: Usuario, token: string) => {
-        debugger;
         setUsuario(usuario);
         setToken(token);
         Cookies.set('usuario', JSON.stringify(usuario), { expires: 7 });
-        Cookies.set('token', token, { expires: 7, secure: true })
-
+        Cookies.set('token', token, { expires: 7, secure: true });
     }
 
     const logout = () => {
@@ -58,7 +75,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setToken(null);
         Cookies.remove('usuario');
         Cookies.remove('token');
-
     }
 
     return (

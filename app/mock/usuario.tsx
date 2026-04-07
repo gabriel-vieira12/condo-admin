@@ -1,41 +1,37 @@
 import { Usuario } from "@/app/context/AuthContext";
 
 export class UsuarioMock {
-
     private static usuarioDB: Usuario[] = [
-        new Usuario(1, "Professor Samuel Matos", "00000000000", true),
-        new Usuario(2, "Matheus", "00000000000", true),
-        new Usuario(3, "Carlos", "00000000000", true),
-        new Usuario(4, "Jose", "00000000000", true),
-        new Usuario(5, "Paulo", "00000000000", true)
+        new Usuario(1, "Gabriel Vieira", "gabriel@email.com", "ATIVO", "Condomínio Central", "123456"),
+        new Usuario(2, "Matheus", "matheus@email.com", "ATIVO", "Residencial Sol", "123456"),
+        new Usuario(3, "Carlos", "carlos@email.com", "ATIVO", "Jardim das Flores", "123456"),
+        new Usuario(4, "José", "jose@email.com", "INATIVO", "Condomínio Azul", "123456"),
+        new Usuario(5, "Paulo", "paulo@email.com", "ATIVO", "Residencial São Pedro", "123456")
     ];
 
     static async listarTodos(): Promise<Usuario[]> {
-        return [...this.usuarioDB]
+        return [...this.usuarioDB];
     }
 
     static async salvar(usuario: Usuario): Promise<void> {
+        const indexExistente = this.usuarioDB.findIndex(u => u.id === usuario.id);
 
+        if (indexExistente === -1 || usuario.id === null) {
+            const novoId =
+                this.usuarioDB.length > 0
+                    ? Math.max(...this.usuarioDB.map(u => u.id ?? 0)) + 1
+                    : 1;
 
-        const indexExistente = this.usuarioDB.findIndex(u => u.codigo === usuario.codigo);
-
-        if (indexExistente === -1) {
-
-            const novoCodigo = Math.max(...this.usuarioDB.map(u => u.codigo)) + 1;
-            usuario.codigo = novoCodigo;
+            usuario.id = novoId;
             this.usuarioDB.push(usuario);
-            console.log(`Usuario de ID ${novoCodigo} salvo com sucesso!`);
-
-        }else{
-            this.usuarioDB[indexExistente].nome = usuario.nome;
-            this.usuarioDB[indexExistente].cpf = usuario.cpf;
-
-            console.log(`Usuario de ID ${usuario.codigo} atualizado com sucesso!`);
+            console.log(`Usuário de ID ${novoId} salvo com sucesso!`);
+        } else {
+            this.usuarioDB[indexExistente] = usuario;
+            console.log(`Usuário de ID ${usuario.id} atualizado com sucesso!`);
         }
     }
 
-    static async buscarPorId(codigo: Number): Promise<Usuario | undefined> {
-
-        return this.usuarioDB.find(u => u.codigo === codigo);
+    static async buscarPorId(id: number): Promise<Usuario | undefined> {
+        return this.usuarioDB.find(u => u.id === id);
     }
 }
