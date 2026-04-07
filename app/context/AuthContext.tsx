@@ -22,6 +22,26 @@ export class Unidade {
     ) {}
 }
 
+export class Morador {
+    constructor(
+        public id: number | null,
+        public nome: string,
+        public contato: string,
+        public proprietario: boolean,
+        public unidadeId: number | null
+    ) { }
+}
+
+export class Ocorrencia {
+    constructor(
+        public id: number | null,
+        public descricao: string,
+        public gravidade: string,
+        public status: string,
+        public unidadeId: number | null
+    ) { }
+}
+
 interface AuthContextType {
     usuario: Usuario | null,
     token: string | null,
