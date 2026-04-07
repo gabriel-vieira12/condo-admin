@@ -49,7 +49,7 @@ export default function LoginPage() {
                 name="email"
                 type="email"
                 placeholder="admin@condominio.com"
-                className="w-full px-5 py-4 rounded-2xl bg-stone-50 border-none ring-1 ring-stone-200 focus:ring-2 focus:ring-[#6B4E3D] outline-none transition-all placeholder:text-stone-300"
+                className="w-full px-5 py-4 rounded-2xl bg-stone-50 border-none ring-1 ring-stone-200 focus:ring-2 focus:ring-[#6B4E3D] outline-none transition-all placeholder:text-stone-500 text-stone-800"
                 required
               />
             </div>
@@ -62,7 +62,7 @@ export default function LoginPage() {
                 name="senha"
                 type="password"
                 placeholder="••••••••"
-                className="w-full px-5 py-4 rounded-2xl bg-stone-50 border-none ring-1 ring-stone-200 focus:ring-2 focus:ring-[#6B4E3D] outline-none transition-all placeholder:text-stone-300"
+                className="w-full px-5 py-4 rounded-2xl bg-stone-50 border-none ring-1 ring-stone-200 focus:ring-2 focus:ring-[#6B4E3D] outline-none transition-all placeholder:text-stone-500 text-stone-800"
                 required
               />
             </div>
