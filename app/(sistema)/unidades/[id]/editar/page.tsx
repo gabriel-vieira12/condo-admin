@@ -1,7 +1,7 @@
 'use client';
 
 import { Unidade } from "@/app/context/AuthContext";
-import { UnidadeMock } from "@/app/mock/unidade";
+import { UnidadeService } from "@/app/servicos/unidadeService";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ export default function EditarUnidade() {
   }, []);
 
   const buscarDados = async () => {
-    const unidadeEncontrada = await UnidadeMock.buscarPorId(id);
+    const unidadeEncontrada = await UnidadeService.buscarPorId(id);
 
     if (unidadeEncontrada) {
       setUnidade(unidadeEncontrada);

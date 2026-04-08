@@ -1,7 +1,7 @@
 'use client';
 
 import { Morador } from "@/app/context/AuthContext";
-import { MoradorMock } from "@/app/mock/morador";
+import { MoradorService } from "@/app/servicos/moradorService";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ export default function EditarMorador() {
   }, []);
 
   const buscarDados = async () => {
-    const moradorEncontrado = await MoradorMock.buscarPorId(id);
+    const moradorEncontrado = await MoradorService.buscarPorId(id);
 
     if (moradorEncontrado) {
       setMorador(moradorEncontrado);

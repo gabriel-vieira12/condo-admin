@@ -10,15 +10,18 @@ import lombok.*;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "unidade")
-public class Unidade {
+@Table(name = "ocorrencia")
+public class Ocorrencia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String bloco;
+    private String descricao;
 
-    private String numero;
+    private String gravidade;
 
+    private String status;
+
+    private Long unidadeId;
 }

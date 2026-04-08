@@ -1,11 +1,9 @@
 package com.senac.condo_admin.model.repository;
 
-import com.senac.condo_admin.model.entities.Unidade;
+import com.senac.condo_admin.model.entities.Ocorrencia;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface UnidadeRepository extends JpaRepository<Unidade, Long> {
+public interface OcorrenciaRepository extends JpaRepository<Ocorrencia, Long> {
 }

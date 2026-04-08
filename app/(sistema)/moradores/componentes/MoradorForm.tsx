@@ -1,8 +1,8 @@
 'use client';
 
 import { Morador, Unidade } from "@/app/context/AuthContext";
-import { MoradorMock } from "@/app/mock/morador";
-import { UnidadeMock } from "@/app/mock/unidade";
+import { MoradorService } from "@/app/servicos/moradorService";
+import { UnidadeService } from "@/app/servicos/unidadeService";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -24,13 +24,19 @@ export default function MoradorForm({ moradorExistente }: MoradorFormProps) {
   }, []);
 
   const carregarUnidades = async () => {
-    const lista = await UnidadeMock.listarTodos();
+    const lista = await UnidadeService.listarTodos();
     setUnidades(lista);
   };
 
   const handleSalvar = async () => {
-    await MoradorMock.salvar(morador);
-    alert("Morador salvo com sucesso!");
+    if (morador.id) {
+      await MoradorService.atualizar(morador.id, morador);
+      alert("Morador atualizado com sucesso!");
+    } else {
+      await MoradorService.salvar(morador);
+      alert("Morador salvo com sucesso!");
+    }
+
     router.push("/moradores");
   };
 

@@ -1,10 +1,11 @@
 'use client';
 
 import { Morador } from "@/app/context/AuthContext";
-import { MoradorMock } from "@/app/mock/morador";
-import { UnidadeMock } from "@/app/mock/unidade";
+import { MoradorService } from "@/app/servicos/moradorService";
+import { UnidadeService } from "@/app/servicos/unidadeService";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+
 
 export default function MoradoresPage() {
   const [moradores, setMoradores] = useState<Morador[]>([]);
@@ -16,8 +17,8 @@ export default function MoradoresPage() {
 
   const carregarDados = async () => {
     try {
-      const listaMoradores = await MoradorMock.listarTodos();
-      const listaUnidades = await UnidadeMock.listarTodos();
+      const listaMoradores = await MoradorService.listarTodos();
+      const listaUnidades = await UnidadeService.listarTodos();
 
       const mapa: Record<number, string> = {};
       listaUnidades.forEach((u) => {

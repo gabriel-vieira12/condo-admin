@@ -1,8 +1,8 @@
 'use client';
 
 import { Ocorrencia, Unidade } from "@/app/context/AuthContext";
-import { OcorrenciaMock } from "@/app/mock/ocorrencia";
-import { UnidadeMock } from "@/app/mock/unidade";
+import { OcorrenciaService } from "@/app/servicos/ocorrenciaService";
+import { UnidadeService } from "@/app/servicos/unidadeService";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -25,19 +25,24 @@ export default function OcorrenciaForm({ ocorrenciaExistente }: OcorrenciaFormPr
 
   const carregarUnidades = async () => {
     try {
-      setUnidades(await UnidadeMock.listarTodos());
+      setUnidades(await UnidadeService.listarTodos());
     } catch {
       console.error("Erro ao carregar unidades");
     }
   };
 
   const handleSalvar = async () => {
-    await OcorrenciaMock.salvar(ocorrencia);
-
-    if (ocorrencia.gravidade === "GRAVE") {
-      alert("Atenção: ocorrência grave registrada!");
+    if (ocorrencia.id) {
+      await OcorrenciaService.atualizar(ocorrencia.id, ocorrencia);
+      alert("Ocorrência atualizada com sucesso!");
     } else {
-      alert("Ocorrência salva com sucesso!");
+      await OcorrenciaService.salvar(ocorrencia);
+
+      if (ocorrencia.gravidade === "GRAVE") {
+        alert("Atenção: ocorrência grave registrada!");
+      } else {
+        alert("Ocorrência salva com sucesso!");
+      }
     }
 
     router.push("/chamados");

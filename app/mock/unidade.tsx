@@ -2,10 +2,10 @@ import { Unidade } from "@/app/context/AuthContext";
 
 export class UnidadeMock {
     private static unidadeDB: Unidade[] = [
-        new Unidade(1, "A", "101"),
-        new Unidade(2, "A", "102"),
-        new Unidade(3, "B", "201"),
-        new Unidade(4, "B", "202")
+        new Unidade(1, "A", "101",1),
+        new Unidade(2, "A", "102",1),
+        new Unidade(3, "B", "201",2),
+        new Unidade(4, "B", "202",2)
     ];
 
     static async listarTodos(): Promise<Unidade[]> {

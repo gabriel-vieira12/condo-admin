@@ -1,7 +1,7 @@
 'use client';
 
 import { Unidade } from "@/app/context/AuthContext";
-import { UnidadeMock } from "@/app/mock/unidade";
+import { UnidadeService } from "@/app/servicos/unidadeService";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -28,10 +28,16 @@ export default function UnidadeForm({ unidadeExistente }: UnidadeFormProps) {
   };
 
   const handleSalvar = async () => {
-    await UnidadeMock.salvar(unidade);
-    alert("Unidade salva com sucesso!");
+    if (unidade.id) {
+        await UnidadeService.atualizar(unidade.id, unidade);
+        alert("Unidade atualizada com sucesso!");
+    } else {
+        await UnidadeService.salvar(unidade);
+        alert("Unidade salva com sucesso!");
+    }
+
     router.push("/unidades");
-  };
+};
 
   return (
     <form action={handleSalvar} className="w-full">

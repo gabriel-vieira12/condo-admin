@@ -1,9 +1,9 @@
 'use client';
 
 import { useAuth } from "@/app/context/AuthContext";
-import { MoradorMock } from "@/app/mock/morador";
-import { OcorrenciaMock } from "@/app/mock/ocorrencia";
-import { UnidadeMock } from "@/app/mock/unidade";
+import { MoradorService } from "@/app/servicos/moradorService";
+import { OcorrenciaService } from "@/app/servicos/ocorrenciaService";
+import { UnidadeService } from "@/app/servicos/unidadeService";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -40,9 +40,9 @@ export default function Home() {
 
   const carregarDashboard = async () => {
     try {
-      const unidades = await UnidadeMock.listarTodos();
-      const moradores = await MoradorMock.listarTodos();
-      const ocorrencias = await OcorrenciaMock.listarTodos();
+      const unidades = await UnidadeService.listarTodos();
+      const moradores = await MoradorService.listarTodos();
+      const ocorrencias = await OcorrenciaService.listarTodos();
 
       const mapaUnidades: Record<number, string> = {};
       unidades.forEach((u) => {

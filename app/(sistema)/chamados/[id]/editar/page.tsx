@@ -1,7 +1,7 @@
 'use client';
 
 import { Ocorrencia } from "@/app/context/AuthContext";
-import { OcorrenciaMock } from "@/app/mock/ocorrencia";
+import { OcorrenciaService } from "@/app/servicos/ocorrenciaService";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ export default function EditarOcorrencia() {
   }, []);
 
   const buscarDados = async () => {
-    const ocorrenciaEncontrada = await OcorrenciaMock.buscarPorId(id);
+    const ocorrenciaEncontrada = await OcorrenciaService.buscarPorId(id);
 
     if (ocorrenciaEncontrada) {
       setOcorrencia(ocorrenciaEncontrada);

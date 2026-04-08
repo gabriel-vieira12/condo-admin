@@ -2,9 +2,11 @@
 
 import { Ocorrencia, Unidade } from "@/app/context/AuthContext";
 import { OcorrenciaMock } from "@/app/mock/ocorrencia";
-import { UnidadeMock } from "@/app/mock/unidade";
+import { OcorrenciaService } from "@/app/servicos/ocorrenciaService";
+import { UnidadeService } from "@/app/servicos/unidadeService";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+
 
 export default function ChamadosPage() {
   const [ocorrencias, setOcorrencias] = useState<Ocorrencia[]>([]);
@@ -16,8 +18,8 @@ export default function ChamadosPage() {
 
   const carregarDados = async () => {
     try {
-      const listaOcorrencias = await OcorrenciaMock.listarTodos();
-      const listaUnidades = await UnidadeMock.listarTodos();
+      const listaOcorrencias = await OcorrenciaService.listarTodos();
+      const listaUnidades = await UnidadeService.listarTodos();
 
       const mapa: Record<number, string> = {};
       listaUnidades.forEach((u) => {
@@ -33,12 +35,18 @@ export default function ChamadosPage() {
     }
   };
 
-  const contarGravesAbertas = ocorrencias.filter(
-    (o) => o.gravidade === "GRAVE" && o.status !== "RESOLVIDA"
-  ).length;
+    const contarGravesAbertas = ocorrencias.filter(
+      (o) => o.gravidade === "GRAVE" && o.status !== "RESOLVIDA"
+    ).length;
 
-  const alterarStatus = async (ocorrencia: Ocorrencia, novoStatus: string) => {
-    await OcorrenciaMock.alterarStatus(ocorrencia.id!, novoStatus);
+    const alterarStatus = async (ocorrencia: Ocorrencia, novoStatus: string) => {
+    const ocorrenciaAtualizada = {
+      ...ocorrencia,
+      status: novoStatus
+    };
+
+    await OcorrenciaService.atualizar(ocorrencia.id!, ocorrenciaAtualizada);
+
     carregarDados();
   };
 
