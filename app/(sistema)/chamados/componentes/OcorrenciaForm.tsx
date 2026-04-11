@@ -12,9 +12,7 @@ interface OcorrenciaFormProps {
 }
 
 export default function OcorrenciaForm({ ocorrenciaExistente }: OcorrenciaFormProps) {
-  const [ocorrencia, setOcorrencia] = useState<Ocorrencia>(
-    ocorrenciaExistente || new Ocorrencia(null, "", "BAIXA", "ABERTA", null)
-  );
+  const [ocorrencia, setOcorrencia] = useState<Ocorrencia>(ocorrenciaExistente || new Ocorrencia(null, "", "BAIXA", "ABERTA", null));
 
   const [unidades, setUnidades] = useState<Unidade[]>([]);
   const router = useRouter();
