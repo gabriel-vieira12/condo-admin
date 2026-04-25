@@ -1,15 +1,14 @@
 'use client';
 
-import { Ocorrencia, Unidade } from "@/app/context/AuthContext";
 import { OcorrenciaService } from "@/app/servicos/ocorrenciaService";
 import { UnidadeService } from "@/app/servicos/unidadeService";
+import { Ocorrencia, OcorrenciaFormProps } from "@/app/types/ocorrencia";
+import { Unidade } from "@/app/types/unidade";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-interface OcorrenciaFormProps {
-  ocorrenciaExistente?: Ocorrencia;
-}
+
 
 export default function OcorrenciaForm({ ocorrenciaExistente }: OcorrenciaFormProps) {
   const [ocorrencia, setOcorrencia] = useState<Ocorrencia>(ocorrenciaExistente || new Ocorrencia(null, "", "BAIXA", "ABERTA", null));

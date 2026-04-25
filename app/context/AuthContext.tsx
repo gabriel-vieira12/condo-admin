@@ -2,52 +2,7 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-
-export class Usuario {
-    constructor(
-        public id: number | null,
-        public nome: string,
-        public email: string,
-        public status: string,
-        public nomeCondominio: string,
-        public senha: string
-    ) { }
-}
-
-export class Unidade {
-    constructor(
-        public id: number | null,
-        public bloco: string,
-        public numero: string
-    ) {}
-}
-
-export class Morador {
-    constructor(
-        public id: number | null,
-        public nome: string,
-        public contato: string,
-        public proprietario: boolean,
-        public unidadeId: number | null
-    ) { }
-}
-
-export class Ocorrencia {
-    constructor(
-        public id: number | null,
-        public descricao: string,
-        public gravidade: string,
-        public status: string,
-        public unidadeId: number | null
-    ) { }
-}
-
-interface AuthContextType {
-    usuario: Usuario | null,
-    token: string | null,
-    login: (usuario: Usuario, token: string) => void,
-    logout: () => void
-}
+import { AuthContextType, Usuario } from "../types/usuarios";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

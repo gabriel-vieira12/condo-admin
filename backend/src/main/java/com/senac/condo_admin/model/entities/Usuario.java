@@ -23,6 +23,8 @@ public class Usuario {
 
     private String senha;
 
+    private String role;
+
     private String nomeCondominio;
 
     private EnumStatusUsuario status = EnumStatusUsuario.ATIVO;

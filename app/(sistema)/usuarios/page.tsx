@@ -1,6 +1,9 @@
 'use client'
-import { Usuario } from "@/app/context/AuthContext";
+
 import { UsuarioMock } from "@/app/mock/usuario";
+import { buscarListaUsuarios } from "@/app/servicos/usuarioService";
+import { Usuario } from "@/app/types/usuarios";
+import { error } from "console";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -13,9 +16,12 @@ export default function UsuariosPage() {
 
   const carregarDados = async () => {
     try {
-      setUsuarios(await UsuarioMock.listarTodos());
+      const dados = await buscarListaUsuarios();
+      setUsuarios(dados);
+
     } catch {
-      console.error("Erro ao carregar dados");
+      alert("Erro ao carregar dados dos usuários")
+      console.error(error);
     }
   };
 

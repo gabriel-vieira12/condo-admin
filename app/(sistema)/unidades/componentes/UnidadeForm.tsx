@@ -1,14 +1,10 @@
 'use client';
 
-import { Unidade } from "@/app/context/AuthContext";
-import { UnidadeService } from "@/app/servicos/unidadeService";
+import { Unidade, UnidadeFormProps } from "@/app/types/unidade";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-interface UnidadeFormProps {
-  unidadeExistente?: Unidade;
-}
 
 export default function UnidadeForm({ unidadeExistente }: UnidadeFormProps) {
   const [unidade, setUnidade] = useState<Unidade>(

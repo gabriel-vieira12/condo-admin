@@ -1,4 +1,5 @@
-import { Usuario } from "@/app/context/AuthContext";
+import { Usuario } from "../types/usuarios";
+
 
 export class UsuarioMock {
     private static usuarioDB: Usuario[] = [
