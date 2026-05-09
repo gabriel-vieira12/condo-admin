@@ -3,8 +3,16 @@
 import { useAuth } from "@/app/context/AuthContext";
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useDispatch } from "react-redux";
+import { store } from "../redux/store";
+import { Usuario } from "@/app/types/usuarios"
+import { logout } from "../redux/slices/authSlice";
 
 export default function Header() {
+
+  const dispatch = useDispatch();
+  const usuario = store.getState().auth.usuario
+
   const pathname = usePathname();
   const router = useRouter();
   const { usuario, logout } = useAuth();

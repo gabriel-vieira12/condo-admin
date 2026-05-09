@@ -4,9 +4,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from "@/app/context/AuthContext";
 import { UsuarioMock } from "@/app/mock/usuario";
+import { useDispatch } from 'react-redux';
 
 export default function LoginPage() {
   const router = useRouter();
+
+  const dispatch = useDispatch();
+
   const { login } = useAuth();
 
   const handleLogin = async (formData: FormData) => {

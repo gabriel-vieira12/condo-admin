@@ -1,5 +1,5 @@
 'use client'
-import { UsuarioMock } from "@/app/mock/usuario";
+
 import { Usuario, UsuarioFormProps } from "@/app/types/usuarios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
