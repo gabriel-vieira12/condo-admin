@@ -24,7 +24,7 @@ jobs:
       - name: ⏱️ Aguardar os contêineres estabilizarem
         run: |
           echo "Aguardando 30 segundos para os serviços iniciarem..."
-          sleep 30
+          sleep 60
 
       - name: 🩺 Verificar status dos contêineres
         working-directory: ./backend
