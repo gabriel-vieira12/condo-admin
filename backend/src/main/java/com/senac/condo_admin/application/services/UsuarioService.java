@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,10 +37,20 @@ public class UsuarioService {
 
     public List<UsuarioResponse> ListarTodos() {
         try{
-            return usuarioRepository.findAll()
+            Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            var empresa = usuarioLogado.getEmpresa();
+
+            return usuarioRepository.getUsuariosByEmpresa_Id(empresa.getId())
                     .stream()
                     .map(UsuarioResponse::new)
                     .collect(Collectors.toList());
+
+//            return usuarioRepository.findAll()
+//                    .stream()
+//                    .filter(a-> a.getEmpresa().getId().equals(empresa.getId()))
+//                    .map(UsuarioResponse::new)
+//                    .collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -55,9 +66,14 @@ public class UsuarioService {
         }
     }
 
+
+
     public UsuarioResponse BuscarUsuarioPorId(Long id) {
         try{
-            var usuario = usuarioRepository.findById(id).orElse(null);
+
+            Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            var usuario = usuarioRepository.findByIdAndEmpresa_Id(id,usuarioLogado.getEmpresa().getId()).orElse(null);
             return new UsuarioResponse(usuario);
         } catch (Exception e) {
             throw new RuntimeException(e);

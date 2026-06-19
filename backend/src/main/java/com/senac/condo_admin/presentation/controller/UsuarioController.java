@@ -2,10 +2,10 @@ package com.senac.condo_admin.presentation.controller;
 
 
 import com.senac.condo_admin.application.DTO.AlterarStatusRequest;
+import com.senac.condo_admin.application.DTO.UsuarioAdmRequest;
 import com.senac.condo_admin.application.DTO.UsuarioRequest;
 import com.senac.condo_admin.application.DTO.UsuarioResponse;
 import com.senac.condo_admin.application.services.UsuarioService;
-import com.senac.condo_admin.domain.entities.Usuario;
 import com.senac.condo_admin.domain.repository.UsuarioRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +23,6 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
-
 
     @GetMapping
     @Operation(summary = "Listar todos",description = "Método para listar todos os usuários!")
@@ -47,35 +46,35 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.SalvarUsuario(usuario));
     }
 
+    @PostMapping("/adm")
+    @Operation(summary = "Criar usuario adm",description = "Metodo resposavel por criar usuário")
+    public ResponseEntity<Long> salvarAdm (@RequestBody UsuarioAdmRequest usuario){
+
+        return ResponseEntity.ok(usuarioService.SalvarUsuarioAdm(usuario));
+    }
+
+
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar usuario",description = "Metodo resposavel por atualizar usuário")
-    public ResponseEntity<?> alterarUsuario (@PathVariable Long id, @RequestBody Usuario usuario){
+    public ResponseEntity<?> alterarUsuario (@PathVariable Long id, @RequestBody UsuarioRequest usuario){
 
-        var alterarUsuarioResult = usuarioService.AlterarUsuario(id,usuario);
+        var alterarUsuarioResult = usuarioService.AterarUsuario(id,usuario);
         return alterarUsuarioResult ? ResponseEntity.ok("Atualizado com sucesso!") : ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}/AlterarStatus")
     public ResponseEntity<?> AlterarStatus(@PathVariable Long id, @RequestBody AlterarStatusRequest statusRequest){
 
-        var usuarioBanco = usuarioRepository.findById(id).orElse(null);
+        boolean alterarStatusResult = usuarioService.AlterarStatus(id,statusRequest);
+        return alterarStatusResult ? ResponseEntity.ok("Atualizado com sucesso!") : ResponseEntity.notFound().build();
 
-        if (usuarioBanco != null){
-
-            usuarioBanco.setStatus(statusRequest.status());
-            usuarioRepository.save(usuarioBanco);
-
-            return ResponseEntity.ok("Atualizado com sucesso!");
-        }
-
-        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/usuariologado")
     @Operation(summary = "Consulta usuario logado",description = "busca usuario da sessãoo")
-    public ResponseEntity<Usuario> buscarUsarioLogado(Authentication authentication){
-        Usuario usuario = (Usuario) authentication.getPrincipal();
-        return ResponseEntity.ok(usuarioService.BuscarUsuarioLogado(usuario));
+    public ResponseEntity<UsuarioResponse> buscarUsarioLogado(Authentication authentication){
+
+        return ResponseEntity.ok(usuarioService.BuscarUsuarioLogado(authentication));
     }
 
 
