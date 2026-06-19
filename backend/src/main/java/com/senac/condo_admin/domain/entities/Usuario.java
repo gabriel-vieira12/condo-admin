@@ -2,6 +2,7 @@ package com.senac.condo_admin.domain.entities;
 
 
 import com.senac.condo_admin.application.DTO.UsuarioAdmRequest;
+import com.senac.condo_admin.application.DTO.UsuarioRequest;
 import com.senac.condo_admin.domain.enuns.EnumStatusUsuario;
 import com.senac.condo_admin.domain.valueobjects.CPF;
 import jakarta.persistence.*;
