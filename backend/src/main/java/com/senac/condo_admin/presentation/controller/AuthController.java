@@ -1,5 +1,6 @@
 package com.senac.condo_admin.presentation.controller;
 
+
 import com.senac.condo_admin.application.DTO.LoginRequest;
 import com.senac.condo_admin.application.DTO.LoginResponse;
 import com.senac.condo_admin.application.services.TokenService;
@@ -11,10 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("/auth")
-@Tag(name = "Serviço autenticação", description = "Serviço responsavel por controlar a autenticação de usuarios e sessão!")
+@Tag(description = "Serviço responsavel por controlar a autenticação de usuarios e sessão!",name = "Serviço autenticação")
 public class AuthController {
 
     @Autowired
@@ -24,16 +24,19 @@ public class AuthController {
     private UsuarioService usuarioService;
 
     @PostMapping("/login")
-    @Operation(summary = "Realizar login", description = "Autentica um usuário no sistema com e-mail e senha")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    @Operation(description = "Valida senha asdhaukshd 50 carecteres, calcula longitudo com latitud!",summary = "Login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
 
-        if (usuarioService.validaUsuarioSenha(loginRequest)) {
 
-            var token = tokenService.gerarToken (loginRequest.email());
+        if(usuarioService.ValidaUsuarioSenha(loginRequest)){
+
+            var token = tokenService.gerarToken(loginRequest.email());
 
             return ResponseEntity.ok(new LoginResponse(token));
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
+
+
 }
