@@ -30,8 +30,8 @@ jobs:
         working-directory: ./backend
         run: |
           docker compose ps
-          docker compose logs db || echo "Serviço 'db' não encontrado."
-          docker compose logs api || echo "Serviço 'api' não encontrado."
+          docker compose logs postgres-db || echo "Serviço 'postgres-db' não encontrado."
+          docker compose logs api-spring || echo "Serviço 'api-spring' não encontrado."
 
       - name: 📞 Realizar teste de saúde na API
         run: curl --fail http://localhost:8080/swagger-ui/index.html
