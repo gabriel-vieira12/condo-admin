@@ -21,10 +21,10 @@ public class TokenService {
     @Value("${spring.secretkey}")
     private String secret;
 
-    @Value("${spring.emissor")
+    @Value("${spring.emissor}")
     private String emissor;
 
-    @Value("${spring.tempoExpiracao")
+    @Value("${spring.tempoExpiracao}")
     private Long tempoExpiracao;
 
     @Autowired
