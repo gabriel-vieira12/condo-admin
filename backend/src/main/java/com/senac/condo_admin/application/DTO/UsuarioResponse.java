@@ -2,8 +2,7 @@ package com.senac.condo_admin.application.DTO;
 
 import com.senac.condo_admin.domain.entities.Usuario;
 
-public record UsuarioResponse(
-
+public record UsuarioResponse (
         Long id,
         String nome,
         String email,
@@ -17,4 +16,8 @@ public record UsuarioResponse(
                 usuario.getStatus().toString()
         );
     }
+
+
+
+
 }

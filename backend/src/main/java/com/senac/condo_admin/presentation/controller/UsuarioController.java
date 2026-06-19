@@ -3,10 +3,8 @@ package com.senac.condo_admin.presentation.controller;
 
 import com.senac.condo_admin.application.DTO.AlterarStatusRequest;
 import com.senac.condo_admin.application.DTO.UsuarioAdmRequest;
-import com.senac.condo_admin.application.DTO.UsuarioRequest;
 import com.senac.condo_admin.application.DTO.UsuarioResponse;
 import com.senac.condo_admin.application.services.UsuarioService;
-import com.senac.condo_admin.domain.repository.UsuarioRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
