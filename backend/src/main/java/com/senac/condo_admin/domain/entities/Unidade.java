@@ -3,12 +3,10 @@ package com.senac.condo_admin.domain.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 @Table(name = "unidade")
 public class Unidade {
@@ -21,4 +19,7 @@ public class Unidade {
 
     private String numero;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "empresa_id", referencedColumnName = "id")
+    private Empresa empresa;
 }

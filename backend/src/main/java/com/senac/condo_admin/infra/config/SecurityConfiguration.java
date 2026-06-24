@@ -24,15 +24,14 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests( auth -> auth
                         .requestMatchers("/auth/login",
-                                        "/swagger-ui/**",
-                                        "/webjars/**",
-                                        "/swagger-resources/**",
-                                        "/v3/api-docs/**")
+                                "/usuarios/adm",
+                                "/swagger-ui/**",
+                                "/webjars/**",
+                                "/swagger-resources/**",
+                                "/v3/api-docs/**")
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET,"/usuarios",
-                                "/ong")
+                        .requestMatchers(HttpMethod.GET,"/usuarios")
                         .hasRole("ADMIN")
-                        .requestMatchers("/pets").hasRole("ADMIN_ONG")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
