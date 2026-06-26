@@ -2,32 +2,54 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useAuth } from "@/app/context/AuthContext";
-import { UsuarioMock } from "@/app/mock/usuario";
+import { loginService } from '../servicos/authService';
 import { useDispatch } from 'react-redux';
+import { setToken, setUsuario } from '../redux/slices/authSlice';
+import { buscarUsuarioLogado } from '../servicos/usuarioService';
 
 export default function LoginPage() {
-  const router = useRouter();
+    const router = useRouter();
+    const dispatch = useDispatch();
 
-  const dispatch = useDispatch();
+    const handleLogin = async (formData: FormData) => {
 
-  const { login } = useAuth();
+        const email = formData.get("email")?.toString() ?? "";
+        const senha = formData.get("senha")?.toString() ?? "";
 
-  const handleLogin = async (formData: FormData) => {
-    const email = String(formData.get("email") || "");
-    const senha = String(formData.get("senha") || "");
+        try {
 
-    const usuarioEncontrado = await UsuarioMock.autenticar(email, senha);
+            const loginResult = await loginService({email:email,senha:senha});
+            debugger;
+            if (!loginResult.token) {
+                alert("Usuario ou senha invalido!")
+                return;
+            }
+            var token = loginResult.token;
+            
+           
+            dispatch(setToken(
+                {
+                    token: token
+                }
+            ));
+            const usuario = await buscarUsuarioLogado();
 
-    if (!usuarioEncontrado) {
-      alert("E-mail ou senha inválidos!");
-      return;
+             dispatch(setUsuario(
+                {
+                    usuario: {...usuario}
+                }
+            ));
+
+
+        } catch (error) {
+            alert("Erro ao entrar no sistema!")
+        }
+
+
+        console.log(`autenticado com email: ${email}`)
+
+        router.push("/home")
     }
-
-    login(usuarioEncontrado, "token-mock-condoadmin");
-
-    router.push("/home");
-  };
 
   return (
     <div className="min-h-screen bg-[#FFF] flex items-center justify-center p-4 font-sans">

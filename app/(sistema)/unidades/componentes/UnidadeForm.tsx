@@ -1,5 +1,6 @@
 'use client';
 
+import { atualizarUnidade, salvarUnidade } from "@/app/servicos/unidadeService";
 import { Unidade, UnidadeFormProps } from "@/app/types/unidade";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -24,16 +25,21 @@ export default function UnidadeForm({ unidadeExistente }: UnidadeFormProps) {
   };
 
   const handleSalvar = async () => {
-    if (unidade.id) {
-        await UnidadeService.atualizar(unidade.id, unidade);
+    try {
+      if (unidade.id) {
+        await atualizarUnidade(unidade);
         alert("Unidade atualizada com sucesso!");
-    } else {
-        await UnidadeService.salvar(unidade);
-        alert("Unidade salva com sucesso!");
-    }
+      } else {
+        const codigo = await salvarUnidade(unidade);
+        alert("Unidade salva com sucesso! Código: " + codigo);
+      }
 
-    router.push("/unidades");
-};
+      router.push("/unidades");
+    } catch (error) {
+      alert("Erro ao salvar unidade!");
+      console.error(error);
+    }
+  };
 
   return (
     <form action={handleSalvar} className="w-full">

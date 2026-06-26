@@ -1,40 +1,44 @@
+import { AuthState } from "@/app/types/auth";
 import { Usuario } from "@/app/types/usuarios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import Cookies from "js-cookie";
 
-
 const usuarioRecover = Cookies.get('usuario');
-const tokenRecover = Cookies.get("token");
+const tokenRecover = Cookies.get('token');
 
-const initialState = {
-    usuario: usuarioRecover ? JSON.parse(usuarioRecover): {},
+
+const initialState : AuthState = {
+    usuario: usuarioRecover ? JSON.parse(usuarioRecover) as Usuario: null,
     token: tokenRecover ?? ""
 }
 
-const authSlice = createSlice(
-    {
-        name: 'auth',
+const authSlice = createSlice({
+        name:'auth',
         initialState,
         reducers:{
-            login: (state, action: PayloadAction<{usuario: string, token: string}>) => {
+            setToken : (state, action: PayloadAction<{ token: string}>) => {
 
-                state.token = action.payload.token; 
-                state.usuario = action.payload.usuario; 
-                Cookies.set('usuario', JSON.stringify(action.payload.usuario), { expires: 7})
-                Cookies.set('token', JSON.stringify(action.payload.usuario), { expires: 7, secure: true})
+                state.token = action.payload.token;
+                 Cookies.set('token', action.payload.token, { expires: 7, secure: true })
+
 
             },
-            logout: (state)=> {
+            setUsuario : (state, action: PayloadAction<{usuario: Usuario}>) => {
 
-                state.token="";
-                state.usuario= null;
-                Cookies.remove("usuario");
-                Cookies.remove("token");
+                state.usuario = action.payload.usuario;
+                Cookies.set('usuario', JSON.stringify(action.payload.usuario), { expires: 7 });
+              
 
+            },
+            logout : (state) => {
+
+                state.token ="";
+                state.usuario = null;
+                Cookies.remove('usuario');
+                Cookies.remove('token');    
             }
         }
-    }
-);
+    });
 
-export const {login, logout} = authSlice.actions;
-export default authSlice.reducer;
+    export const { setToken,setUsuario, logout } = authSlice.actions;
+    export default authSlice.reducer;

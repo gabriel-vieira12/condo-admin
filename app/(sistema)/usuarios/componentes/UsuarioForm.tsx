@@ -1,40 +1,57 @@
 'use client'
-
+import { atualizar, salvar } from "@/app/servicos/usuarioService";
 import { Usuario, UsuarioFormProps } from "@/app/types/usuarios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react"
 
 
+
+
 export default function UsuarioForm({ usuarioExistente }: UsuarioFormProps) {
+
+
     const [usuario, setUsuario] = useState<Usuario>(
         usuarioExistente || new Usuario(null, '', '', 'ATIVO', '', '')
     );
 
     const router = useRouter();
 
-    const handleChange = (
-        campo: 'nome' | 'email' | 'nomeCondominio' | 'senha',
-        valor: string
-    ) => {
-        setUsuario(prev =>
-            new Usuario(
-                prev.id,
-                campo === 'nome' ? valor : prev.nome,
-                campo === 'email' ? valor : prev.email,
-                prev.status,
-                campo === 'nomeCondominio' ? valor : prev.nomeCondominio,
-                campo === 'senha' ? valor : prev.senha
-            )
+    const handleChange = (campo: 'nome' | 'email' | 'senha' | 'nomeCondominio', valor: string) => {
+    setUsuario(prev =>
+        new Usuario(
+            prev.id,
+            campo === 'nome' ? valor : prev.nome,
+            campo === 'email' ? valor : prev.email,
+            prev.status,
+            campo === 'nomeCondominio' ? valor : prev.nomeCondominio,
+            campo === 'senha' ? valor : prev.senha,
         )
-    }
+    );
+    };
 
-    const handleSalvar = async () => {
-        await UsuarioMock.salvar(usuario);
+    const handleSalvar = async (formData: FormData) => {
 
-        alert("Síndico salvo com sucesso!");
+        debugger;
+        if (usuarioExistente) {
+            var dadosResult = await atualizar(usuario);
+            if (dadosResult > 0) {
+                return;
+            }
+            alert(dadosResult);
 
-        router.push("/usuarios");
+        } else {
+
+            var dadosResult = await salvar(usuario)
+
+            if (dadosResult === undefined) {
+                return;
+            }
+            alert("Usuário salvo com sucesso! Código:" + dadosResult)
+
+        }
+
+        router.push("/usuarios")
     }
 
     return (

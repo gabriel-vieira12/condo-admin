@@ -12,6 +12,23 @@ export async function buscarListaUsuarios(): Promise<Usuario[]> {
     }
     return [];
 }
+export async function atualizar(usuarioExistente : Usuario): Promise<number> {
+    var dadosResult = await api
+            .put<number>('http://localhost:8080/usuarios/'+usuarioExistente.id, usuarioExistente);
+          
+    return dadosResult.data;
+    
+}
+
+export async function salvar(usuario:Usuario) : Promise<number>{
+
+       var dadosResult = await api.post<number>('http://localhost:8080/usuarios', usuario);
+
+        return dadosResult.data;
+}
+export async function buscarPorId(codigo:number): Promise<Usuario> {
+    return (await api.get<Usuario>('http://localhost:8080/usuarios/'+codigo)).data
+}
 
 export async function alterarStatusUsuario(usuario: Usuario): Promise<void> {
 
@@ -23,9 +40,13 @@ export async function alterarStatusUsuario(usuario: Usuario): Promise<void> {
     }
 
     var dadosResult = await api
-        .put<number>('/usuarios/' + usuario.id + '/AlterarStatus', { status: novoStatus });
+        .put<number>('/usuarios/' + usuario.id + '/AlterarStatus', novoStatus);
 
     if (dadosResult.status !== 200) {
         alert("Erro ao atualizar Status!")
     }
+}
+
+export async function  buscarUsuarioLogado() : Promise<Usuario> {
+     return (await api.get<Usuario>('http://localhost:8080/usuarios/usuariologado')).data;
 }

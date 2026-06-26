@@ -1,7 +1,7 @@
 'use client';
 
-import { Unidade } from "@/app/context/AuthContext";
-import { UnidadeService } from "@/app/servicos/unidadeService";
+import { buscarListaUnidades } from "@/app/servicos/unidadeService";
+import { Unidade } from "@/app/types/unidade";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -14,9 +14,11 @@ export default function UnidadesPage() {
 
   const carregarDados = async () => {
     try {
-      setUnidades(await UnidadeService.listarTodos());
-    } catch {
-      console.error("Erro ao carregar unidades");
+      const dados = await buscarListaUnidades();
+      setUnidades(dados);
+    } catch (error) {
+      alert("Erro ao carregar unidades!");
+      console.error(error);
     }
   };
 

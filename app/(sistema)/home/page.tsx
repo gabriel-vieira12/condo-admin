@@ -1,11 +1,12 @@
 'use client';
 
-import { useAuth } from "@/app/context/AuthContext";
-import { MoradorService } from "@/app/servicos/moradorService";
-import { OcorrenciaService } from "@/app/servicos/ocorrenciaService";
-import { UnidadeService } from "@/app/servicos/unidadeService";
+import { buscarListaMoradores } from "@/app/servicos/moradorService";
+import { buscarListaOcorrencias } from "@/app/servicos/ocorrenciaService";
+import { buscarListaUnidades } from "@/app/servicos/unidadeService";
+import { RootState } from "@/app/redux/store";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 type ResumoType = {
   totalUnidades: number;
@@ -23,7 +24,7 @@ type OcorrenciaView = {
 };
 
 export default function Home() {
-  const { usuario } = useAuth();
+  const usuario = useSelector((state: RootState) => state.auth.usuario);
 
   const [resumo, setResumo] = useState<ResumoType>({
     totalUnidades: 0,
@@ -40,9 +41,9 @@ export default function Home() {
 
   const carregarDashboard = async () => {
     try {
-      const unidades = await UnidadeService.listarTodos();
-      const moradores = await MoradorService.listarTodos();
-      const ocorrencias = await OcorrenciaService.listarTodos();
+      const unidades = await buscarListaUnidades();
+      const moradores = await buscarListaMoradores();
+      const ocorrencias = await buscarListaOcorrencias();
 
       const mapaUnidades: Record<number, string> = {};
       unidades.forEach((u) => {
@@ -76,7 +77,8 @@ export default function Home() {
 
       setUltimasOcorrencias(ultimas);
     } catch (error) {
-      console.error("Erro ao carregar dashboard:", error);
+        alert("Erro ao carregar dashboard!");
+        console.error(error);
     }
   };
 

@@ -1,5 +1,7 @@
 package com.senac.condo_admin.application.services;
 
+import com.senac.condo_admin.domain.entities.Empresa;
+import com.senac.condo_admin.domain.repository.EmpresaRepository;
 import com.senac.condo_admin.application.DTO.*;
 import com.senac.condo_admin.domain.entities.Usuario;
 import com.senac.condo_admin.domain.repository.UsuarioRepository;
@@ -19,6 +21,9 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private EmpresaRepository empresaRepository;
 
     @Value("${spring.secretkey}")
     private String secret;

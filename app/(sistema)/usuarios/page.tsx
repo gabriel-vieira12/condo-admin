@@ -1,50 +1,38 @@
 'use client'
 
-import { UsuarioMock } from "@/app/mock/usuario";
-import { buscarListaUsuarios } from "@/app/servicos/usuarioService";
+import { alterarStatusUsuario, buscarListaUsuarios } from "@/app/servicos/usuarioService";
 import { Usuario } from "@/app/types/usuarios";
-import { error } from "console";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function UsuariosPage() {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
-  useEffect(() => {
-    carregarDados();
-  }, []);
+   useEffect(() => {
+        carregarDados();
+    }, []);
 
-  const carregarDados = async () => {
-    try {
-      const dados = await buscarListaUsuarios();
-      setUsuarios(dados);
+    const carregarDados = async () => {
+        try {
+            const dados = await buscarListaUsuarios();
+            setUsuarios(dados);
 
-    } catch {
-      alert("Erro ao carregar dados dos usuários")
-      console.error(error);
+        } catch (error) {
+            alert("Erro ao carregar dados dos usuário!")
+            console.error(error)
+        }
     }
-  };
 
-  const handlerAlterarStatus = async (usuario: Usuario) => {
-    try {
-      setUsuarios(usuariosAtuais =>
-        usuariosAtuais.map(u =>
-          u.id === usuario.id
-            ? new Usuario(
-                u.id,
-                u.nome,
-                u.email,
-                u.status === "ATIVO" ? "INATIVO" : "ATIVO",
-                u.nomeCondominio,
-                u.senha
-              )
-            : u
-        )
-      );
-    } catch {
-      console.error("Erro ao alterar status");
-    }
-  };
+    const handlerAlterarStatus = async (usuario: Usuario) => {
+      try {
+        await alterarStatusUsuario(usuario);
+        await carregarDados();
+        alert("Status alterado com sucesso!");
+      } catch (error) {
+        alert("Erro ao alterar status do usuário!");
+        console.error(error);
+      }
+    };
 
   return (
     <div className="overflow-x-auto bg-white rounded-xl shadow">

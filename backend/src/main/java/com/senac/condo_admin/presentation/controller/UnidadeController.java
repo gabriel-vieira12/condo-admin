@@ -1,5 +1,8 @@
 package com.senac.condo_admin.presentation.controller;
 
+
+import com.senac.condo_admin.domain.entities.Usuario;
+import org.springframework.security.core.context.SecurityContextHolder;
 import com.senac.condo_admin.domain.entities.Unidade;
 import com.senac.condo_admin.domain.repository.UnidadeRepository;
 import io.swagger.v3.oas.annotations.Operation;

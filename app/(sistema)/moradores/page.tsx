@@ -1,8 +1,8 @@
 'use client';
 
-import { Morador } from "@/app/context/AuthContext";
-import { MoradorService } from "@/app/servicos/moradorService";
-import { UnidadeService } from "@/app/servicos/unidadeService";
+import { buscarListaMoradores } from "@/app/servicos/moradorService";
+import { buscarListaUnidades } from "@/app/servicos/unidadeService";
+import { Morador } from "@/app/types/morador";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -17,20 +17,22 @@ export default function MoradoresPage() {
 
   const carregarDados = async () => {
     try {
-      const listaMoradores = await MoradorService.listarTodos();
-      const listaUnidades = await UnidadeService.listarTodos();
+      const listaMoradores = await buscarListaMoradores();
+      const listaUnidades = await buscarListaUnidades();
 
       const mapa: Record<number, string> = {};
+
       listaUnidades.forEach((u) => {
-        if (u.id !== null) {
+        if (u.id != null) {
           mapa[u.id] = `Bloco ${u.bloco} - ${u.numero}`;
         }
       });
 
       setMoradores(listaMoradores);
       setMapaUnidades(mapa);
-    } catch {
-      console.error("Erro ao carregar moradores");
+    } catch (error) {
+      alert("Erro ao carregar moradores!");
+      console.error(error);
     }
   };
 

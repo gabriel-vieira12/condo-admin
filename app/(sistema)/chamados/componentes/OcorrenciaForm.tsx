@@ -1,7 +1,7 @@
 'use client';
 
-import { OcorrenciaService } from "@/app/servicos/ocorrenciaService";
-import { UnidadeService } from "@/app/servicos/unidadeService";
+import { atualizarOcorrencia, salvarOcorrencia } from "@/app/servicos/ocorrenciaService";
+import { buscarListaUnidades } from "@/app/servicos/unidadeService";
 import { Ocorrencia, OcorrenciaFormProps } from "@/app/types/ocorrencia";
 import { Unidade } from "@/app/types/unidade";
 import Link from "next/link";
@@ -22,27 +22,33 @@ export default function OcorrenciaForm({ ocorrenciaExistente }: OcorrenciaFormPr
 
   const carregarUnidades = async () => {
     try {
-      setUnidades(await UnidadeService.listarTodos());
-    } catch {
-      console.error("Erro ao carregar unidades");
+      setUnidades(await buscarListaUnidades());
+    } catch (error) {
+      alert("Erro ao carregar unidades!");
+      console.error(error);
     }
   };
 
   const handleSalvar = async () => {
-    if (ocorrencia.id) {
-      await OcorrenciaService.atualizar(ocorrencia.id, ocorrencia);
-      alert("Ocorrência atualizada com sucesso!");
-    } else {
-      await OcorrenciaService.salvar(ocorrencia);
-
-      if (ocorrencia.gravidade === "GRAVE") {
-        alert("Atenção: ocorrência grave registrada!");
+    try {
+      if (ocorrencia.id) {
+        await atualizarOcorrencia(ocorrencia);
+        alert("Ocorrência atualizada com sucesso!");
       } else {
-        alert("Ocorrência salva com sucesso!");
-      }
-    }
+        const codigo = await salvarOcorrencia(ocorrencia);
 
-    router.push("/chamados");
+        if (ocorrencia.gravidade === "GRAVE") {
+          alert("Atenção: ocorrência grave registrada! Código: " + codigo);
+        } else {
+          alert("Ocorrência salva com sucesso! Código: " + codigo);
+        }
+      }
+
+      router.push("/chamados");
+    } catch (error) {
+      alert("Erro ao salvar ocorrência!");
+      console.error(error);
+    }
   };
 
   return (

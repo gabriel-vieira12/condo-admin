@@ -1,8 +1,9 @@
 'use client';
 
-import { Morador, Unidade } from "@/app/context/AuthContext";
-import { MoradorService } from "@/app/servicos/moradorService";
-import { UnidadeService } from "@/app/servicos/unidadeService";
+import { Morador } from "@/app/types/morador";
+import { Unidade } from "@/app/types/unidade";
+import { atualizarMorador, salvarMorador } from "@/app/servicos/moradorService";
+import { buscarListaUnidades } from "@/app/servicos/unidadeService";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -23,21 +24,31 @@ export default function MoradorForm({ moradorExistente }: MoradorFormProps) {
     carregarUnidades();
   }, []);
 
-  const carregarUnidades = async () => {
-    const lista = await UnidadeService.listarTodos();
-    setUnidades(lista);
-  };
+    const carregarUnidades = async () => {
+    try {
+      const lista = await buscarListaUnidades();
+      setUnidades(lista);
+    } catch (error) {
+      alert("Erro ao carregar unidades!");
+      console.error(error);
+    }
+};
 
   const handleSalvar = async () => {
-    if (morador.id) {
-      await MoradorService.atualizar(morador.id, morador);
-      alert("Morador atualizado com sucesso!");
-    } else {
-      await MoradorService.salvar(morador);
-      alert("Morador salvo com sucesso!");
-    }
+    try {
+      if (morador.id) {
+        await atualizarMorador(morador);
+        alert("Morador atualizado com sucesso!");
+      } else {
+        const codigo = await salvarMorador(morador);
+        alert("Morador salvo com sucesso! Código: " + codigo);
+      }
 
-    router.push("/moradores");
+      router.push("/moradores");
+    } catch (error) {
+      alert("Erro ao salvar morador!");
+      console.error(error);
+    }
   };
 
   return (

@@ -6,21 +6,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static com.example.desktop.LoginController.showMenssage;
+
 public class UsuarioController {
 
+
     @FXML
-    private TextField txtLogin;
+    private TextField txtNome;
 
     @FXML
     private TextField txtEmail;
@@ -29,39 +30,42 @@ public class UsuarioController {
     private PasswordField txtSenha;
 
     @FXML
-    private void onVoltarMenuButtonClick() {;
+    private TextField txtCpf;
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    @FXML
+    private void onVoltarButtonClick(ActionEvent event) throws IOException {
 
-        alert.setTitle("Login");
-        alert.setHeaderText(null);
-        alert.setContentText("Login efetuado com e-mail!" +
-                txtLogin.getText());
-        alert.showAndWait();
-
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("menu-view.fxml"));
+        Scene scene = new Scene(loader.load());
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
     }
 
     @FXML
-    private void onSalvarButtonClick(ActionEvent event) throws IOException {
+    private void onSalvarButtonClick(ActionEvent event)  throws IOException{
 
-        URL url = new URL("http://localhost:8080/usuarios");
-        HttpURLConnection com = (HttpURLConnection) url.openConnection();
-        com.setRequestMethod("POST");
-        com.setRequestProperty("Content-Type", "application/json");
 
-        com.setDoOutput(true);
+        URL url = new URL("http://localhost:8080/usuarios/adm");
 
-        String json = "{"+
-                "\"nome\": \""+txtLogin.getText()+"\"" +
-                "\"email\": \""+txtEmail.getText()+"\"" +
-                "\"senha\": \""+txtSenha.getText()+"\"" +
+        HttpURLConnection conn =(HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-type","application/json");
+
+        conn.setDoOutput(true);
+
+        String json = "{\n" +
+                "  \"nome\": \"" + txtNome.getText() + "\",\n" +
+                "  \"email\": \"" + txtEmail.getText() + "\",\n" +
+                "  \"senha\": \"" + txtSenha.getText() + "\",\n" +
+                "  \"secretKey\": \"uwdjqwijj129d01j0d91j29d0j1id89fd\",\n" +
+                "  \"cpf\": \"" + txtCpf.getText() + "\"\n" +
                 "}";
 
-        try(OutputStream os = com.getOutputStream()){
+        try(OutputStream os = conn.getOutputStream()){
             os.write(json.getBytes());
         }
 
-        var code = com.getResponseCode();
+        var code = conn.getResponseCode();
         if (code ==200){
 
             showMenssage("Sucesso ao salvar! ", Alert.AlertType.INFORMATION);
@@ -75,8 +79,7 @@ public class UsuarioController {
             showMenssage("Erro ao salvar! ", Alert.AlertType.ERROR);
         }
 
-        com.disconnect();
-
+        conn.disconnect();
 
     }
 }

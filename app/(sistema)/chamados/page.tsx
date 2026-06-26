@@ -1,9 +1,9 @@
 'use client';
 
-import { Ocorrencia, Unidade } from "@/app/context/AuthContext";
-import { OcorrenciaMock } from "@/app/mock/ocorrencia";
-import { OcorrenciaService } from "@/app/servicos/ocorrenciaService";
-import { UnidadeService } from "@/app/servicos/unidadeService";
+import { Ocorrencia } from "@/app/types/ocorrencia";
+import { Unidade } from "@/app/types/unidade";
+import { buscarListaOcorrencias, atualizarOcorrencia } from "@/app/servicos/ocorrenciaService";
+import { buscarListaUnidades } from "@/app/servicos/unidadeService";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -18,8 +18,8 @@ export default function ChamadosPage() {
 
   const carregarDados = async () => {
     try {
-      const listaOcorrencias = await OcorrenciaService.listarTodos();
-      const listaUnidades = await UnidadeService.listarTodos();
+      const listaOcorrencias = await buscarListaOcorrencias();
+      const listaUnidades = await buscarListaUnidades();
 
       const mapa: Record<number, string> = {};
       listaUnidades.forEach((u) => {
@@ -30,10 +30,11 @@ export default function ChamadosPage() {
 
       setOcorrencias(listaOcorrencias);
       setMapaUnidades(mapa);
-    } catch {
-      console.error("Erro ao carregar ocorrências");
+      } catch (error) {
+        alert("Erro ao carregar ocorrências!");
+        console.error(error);
+      }
     }
-  };
 
     const contarGravesAbertas = ocorrencias.filter(
       (o) => o.gravidade === "GRAVE" && o.status !== "RESOLVIDA"
@@ -45,7 +46,7 @@ export default function ChamadosPage() {
       status: novoStatus
     };
 
-    await OcorrenciaService.atualizar(ocorrencia.id!, ocorrenciaAtualizada);
+    await atualizarOcorrencia(ocorrenciaAtualizada);
 
     carregarDados();
   };

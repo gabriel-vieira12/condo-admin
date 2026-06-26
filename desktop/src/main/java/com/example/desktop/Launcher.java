@@ -1,5 +1,6 @@
 package com.example.desktop;
 
+import com.example.desktop.CondoAdminApplication;
 import javafx.application.Application;
 
 public class Launcher {

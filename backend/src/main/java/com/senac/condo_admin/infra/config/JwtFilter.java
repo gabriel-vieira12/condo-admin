@@ -46,10 +46,14 @@ public class JwtFilter extends OncePerRequestFilter {
         if(header != null&& header.startsWith("Bearer ")){
             String token = header.replace("Bearer ","");
 
-            //Validar TOken JWT
+            //Validar Token JWT
             var retornotoken = tokenService.validarToken(token);
 
             var usuarioLogado  = retornotoken;
+
+            System.out.println("Usuario logado: " + usuarioLogado.getEmail());
+            System.out.println("Role: " + usuarioLogado.getRole());
+            System.out.println("Authorities: " + usuarioLogado.getAuthorities());
 
             UsernamePasswordAuthenticationToken usuario = new UsernamePasswordAuthenticationToken(
                     usuarioLogado,

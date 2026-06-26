@@ -1,21 +1,18 @@
 'use client';
 
-import { useAuth } from "@/app/context/AuthContext";
+
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useDispatch } from "react-redux";
 import { store } from "../redux/store";
-import { Usuario } from "@/app/types/usuarios"
 import { logout } from "../redux/slices/authSlice";
 
 export default function Header() {
-
   const dispatch = useDispatch();
-  const usuario = store.getState().auth.usuario
+  const usuario = store.getState().auth.usuario;
 
   const pathname = usePathname();
   const router = useRouter();
-  const { usuario, logout } = useAuth();
 
   const linkStyle =
     "text-sm font-bold transition-all duration-200 px-3 py-2 rounded-lg uppercase tracking-tight";
@@ -23,7 +20,7 @@ export default function Header() {
   const inactiveStyle = "text-stone-500 hover:text-[#6B4E3D] hover:bg-stone-50";
 
   const handleLogout = () => {
-    logout();
+    dispatch(logout());
     router.push("/login");
   };
 
@@ -85,6 +82,13 @@ export default function Header() {
           >
             Ocorrências
           </Link>
+
+          <Link
+            href="/usuarios"
+            className={`${linkStyle} ${pathname.startsWith('/usuarios') ? activeStyle : inactiveStyle}`}
+          >
+            Usuários
+        </Link>
         </nav>
 
         <div className="flex items-center gap-4">
