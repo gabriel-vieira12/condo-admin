@@ -51,7 +51,7 @@ export default function UnidadeForm({ unidadeExistente }: UnidadeFormProps) {
           <input
             type="text"
             required
-            value={unidade.bloco}
+            value={unidade.bloco ?? ""}
             onChange={(e) => handleChange("bloco", e.target.value)}
             placeholder="Ex: A"
             className="w-full px-4 py-3 rounded-xl border border-stone-300 bg-stone-50 text-stone-800 focus:ring-2 focus:ring-[#6B4E3D] transition-all outline-none"
@@ -65,7 +65,7 @@ export default function UnidadeForm({ unidadeExistente }: UnidadeFormProps) {
           <input
             type="text"
             required
-            value={unidade.numero}
+            value={unidade.numero ?? ""}
             onChange={(e) => handleChange("numero", e.target.value)}
             placeholder="Ex: 101"
             className="w-full px-4 py-3 rounded-xl border border-stone-300 bg-stone-50 text-stone-800 focus:ring-2 focus:ring-[#6B4E3D] transition-all outline-none"

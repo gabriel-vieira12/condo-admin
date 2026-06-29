@@ -5,6 +5,8 @@ public record UsuarioAdmRequest(
         String email,
         String senha,
         String secretKey,
-        String cpf
+        String cpf,
+        String nomeCondominio,
+        String cnpj
 ) {
 }

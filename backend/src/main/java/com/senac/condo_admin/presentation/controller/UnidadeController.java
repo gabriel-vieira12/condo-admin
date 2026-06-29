@@ -1,14 +1,14 @@
 package com.senac.condo_admin.presentation.controller;
 
-
+import com.senac.condo_admin.application.DTO.UnidadeResponse;
 import com.senac.condo_admin.domain.entities.Usuario;
-import org.springframework.security.core.context.SecurityContextHolder;
 import com.senac.condo_admin.domain.entities.Unidade;
 import com.senac.condo_admin.domain.repository.UnidadeRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,35 +21,81 @@ public class UnidadeController {
     @Autowired
     private UnidadeRepository unidadeRepository;
 
+    private Usuario getUsuarioLogado() {
+        return (Usuario) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+    }
+
     @GetMapping
-    @Operation(summary = "Listar unidades", description = "Lista todas as unidades cadastradas no sistema")
-    public ResponseEntity<List<Unidade>> listarTodos() {
-        var unidades = unidadeRepository.findAll();
+    @Operation(summary = "Listar unidades", description = "Lista todas as unidades cadastradas no condomínio do usuário logado")
+    public ResponseEntity<List<UnidadeResponse>> listarTodos() {
+        Usuario usuarioLogado = getUsuarioLogado();
+
+        if (usuarioLogado.getEmpresa() == null) {
+            return ResponseEntity.ok(List.of());
+        }
+
+        var unidades = unidadeRepository.findByEmpresa_Id(usuarioLogado.getEmpresa().getId())
+                .stream()
+                .map(UnidadeResponse::new)
+                .toList();
+
         return ResponseEntity.ok(unidades);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar unidade por ID", description = "Consulta uma unidade específica pelo seu identificador")
-    public ResponseEntity<Unidade> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(unidadeRepository.findById(id).orElse(null));
+    public ResponseEntity<UnidadeResponse> buscarPorId(@PathVariable Long id) {
+        Usuario usuarioLogado = getUsuarioLogado();
+
+        if (usuarioLogado.getEmpresa() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        var unidade = unidadeRepository
+                .findByIdAndEmpresa_Id(id, usuarioLogado.getEmpresa().getId())
+                .orElse(null);
+
+        return unidade != null
+                ? ResponseEntity.ok(new UnidadeResponse(unidade))
+                : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    @Operation(summary = "Criar unidade", description = "Cadastra uma nova unidade no sistema")
+    @Operation(summary = "Criar unidade", description = "Cadastra uma nova unidade no condomínio do usuário logado")
     public ResponseEntity<Long> salvar(@RequestBody Unidade unidade) {
+        Usuario usuarioLogado = getUsuarioLogado();
+
+        if (usuarioLogado.getEmpresa() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        unidade.setEmpresa(usuarioLogado.getEmpresa());
+
         return ResponseEntity.ok(unidadeRepository.save(unidade).getId());
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar unidade", description = "Atualiza os dados de uma unidade existente")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Unidade unidade) {
-        var unidadeBanco = unidadeRepository.findById(id).orElse(null);
+        Usuario usuarioLogado = getUsuarioLogado();
+
+        if (usuarioLogado.getEmpresa() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        var unidadeBanco = unidadeRepository
+                .findByIdAndEmpresa_Id(id, usuarioLogado.getEmpresa().getId())
+                .orElse(null);
 
         if (unidadeBanco != null) {
             unidadeBanco.setBloco(unidade.getBloco());
             unidadeBanco.setNumero(unidade.getNumero());
 
             unidadeRepository.save(unidadeBanco);
+
             return ResponseEntity.ok("Atualizado com sucesso!");
         }
 

@@ -65,7 +65,7 @@ export default function UsuarioForm({ usuarioExistente }: UsuarioFormProps) {
                     <input
                         type="text"
                         required
-                        value={usuario.nome}
+                        value={usuario.nome ?? ""}
                         onChange={(e) => handleChange('nome', e.target.value)}
                         placeholder="João da Silva"
                         className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 transition-all outline-none"
@@ -79,7 +79,7 @@ export default function UsuarioForm({ usuarioExistente }: UsuarioFormProps) {
                     <input
                         type="email"
                         required
-                        value={usuario.email}
+                        value={usuario.email ?? ""}
                         onChange={(e) => handleChange('email', e.target.value)}
                         placeholder="joao@email.com"
                         className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 transition-all outline-none"
@@ -93,7 +93,7 @@ export default function UsuarioForm({ usuarioExistente }: UsuarioFormProps) {
                     <input
                         type="text"
                         required
-                        value={usuario.nomeCondominio}
+                        value={usuario.nomeCondominio ?? ""}
                         onChange={(e) => handleChange('nomeCondominio', e.target.value)}
                         placeholder="Residencial São José"
                         className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 transition-all outline-none"

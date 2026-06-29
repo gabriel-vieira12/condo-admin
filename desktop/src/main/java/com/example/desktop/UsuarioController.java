@@ -27,10 +27,16 @@ public class UsuarioController {
     private TextField txtEmail;
 
     @FXML
+    private TextField txtNomeCondominio;
+
+    @FXML
     private PasswordField txtSenha;
 
     @FXML
     private TextField txtCpf;
+
+    @FXML
+    private TextField txtCnpj;
 
     @FXML
     private void onVoltarButtonClick(ActionEvent event) throws IOException {
@@ -58,7 +64,9 @@ public class UsuarioController {
                 "  \"email\": \"" + txtEmail.getText() + "\",\n" +
                 "  \"senha\": \"" + txtSenha.getText() + "\",\n" +
                 "  \"secretKey\": \"uwdjqwijj129d01j0d91j29d0j1id89fd\",\n" +
-                "  \"cpf\": \"" + txtCpf.getText() + "\"\n" +
+                "  \"cpf\": \"" + txtCpf.getText() + "\",\n" +
+                "  \"nomeCondominio\": \"" + txtNomeCondominio.getText() + "\",\n" +
+                "  \"cnpj\": \"" + txtCnpj.getText() + "\"\n" +
                 "}";
 
         try(OutputStream os = conn.getOutputStream()){

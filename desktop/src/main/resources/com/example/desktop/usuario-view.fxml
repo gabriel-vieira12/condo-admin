@@ -9,12 +9,16 @@
       <Button onAction="#onSalvarButtonClick" layoutX="57.0" layoutY="338.0" mnemonicParsing="false" text="Salvar" />
       <Button onAction="#onVoltarButtonClick" layoutX="165.0" layoutY="338.0" mnemonicParsing="false" text="Voltar" />
       <Label layoutX="55.0" layoutY="45.0" text="Nome" />
+      <TextField fx:id="txtNome" layoutX="140.0" layoutY="41.0" />
       <Label layoutX="55.0" layoutY="88.0" text="Email" />
-      <Label layoutX="55.0" layoutY="125.0" text="Senha" />
-      <Label layoutX="55.0" layoutY="165.0" text="CPF" />
-      <TextField fx:id="txtNome" layoutX="109.0" layoutY="41.0" />
-      <TextField fx:id="txtEmail" layoutX="109.0" layoutY="84.0" />
-      <PasswordField fx:id="txtSenha" layoutX="109.0" layoutY="121.0" />
-      <TextField fx:id="txtCpf" layoutX="109.0" layoutY="170.0" />
+      <TextField fx:id="txtEmail" layoutX="140.0" layoutY="84.0" />
+      <Label layoutX="55.0" layoutY="131.0" text="Condomínio" />
+      <TextField fx:id="txtNomeCondominio" layoutX="140.0" layoutY="127.0" />
+      <Label layoutX="55.0" layoutY="174.0" text="Senha" />
+      <PasswordField fx:id="txtSenha" layoutX="140.0" layoutY="170.0" />
+      <Label layoutX="55.0" layoutY="217.0" text="CPF" />
+      <TextField fx:id="txtCpf" layoutX="140.0" layoutY="213.0" />
+      <Label layoutX="55.0" layoutY="260.0" text="CNPJ" />
+      <TextField fx:id="txtCnpj" layoutX="140.0" layoutY="256.0" />
    </children>
 </AnchorPane>

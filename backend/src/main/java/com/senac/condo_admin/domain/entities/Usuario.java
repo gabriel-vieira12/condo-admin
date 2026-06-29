@@ -60,7 +60,7 @@ public class Usuario implements UserDetails {
     }
 
     public Usuario(UsuarioAdmRequest usuario) {
-        this.email =usuario.email();
+        this.email = usuario.email();
         this.nome = usuario.nome();
         this.cpf = new CPF(usuario.cpf());
         this.senha = usuario.senha();

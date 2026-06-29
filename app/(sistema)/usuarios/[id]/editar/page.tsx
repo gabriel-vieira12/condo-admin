@@ -10,7 +10,7 @@ export default function EditarUsuario(){
 
     const params = useParams()
     const router = useRouter()
-    const codigo = Number(params.codigo);
+    const id = Number(params.id);
 
     const [usuario,setUsuario] = useState<Usuario|null>(null);
 
@@ -21,7 +21,7 @@ export default function EditarUsuario(){
 
     const buscarDados = async ()=>{
         debugger;
-      const user = await buscarPorId(codigo)
+      const user = await buscarPorId(id)
 
       if (user) setUsuario(user)
         else router.push("/usuarios")
@@ -35,7 +35,7 @@ export default function EditarUsuario(){
         <Link href="/usuarios" className="text-blue-600 hover:underline">
           Voltar
         </Link>
-        <h1 className="text-2xl font-bold mt-2">Editar Síndico #{codigo}</h1>
+        <h1 className="text-2xl font-bold mt-2">Editar Síndico #{id}</h1>
       </div>
 
       <UsuarioForm usuarioExistente={usuario} />

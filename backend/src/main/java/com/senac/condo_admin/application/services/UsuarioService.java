@@ -41,21 +41,23 @@ public class UsuarioService {
 
 
     public List<UsuarioResponse> ListarTodos() {
-        try{
+        try {
             Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
             var empresa = usuarioLogado.getEmpresa();
+
+            if (empresa == null) {
+                return usuarioRepository.findAll()
+                        .stream()
+                        .map(UsuarioResponse::new)
+                        .collect(Collectors.toList());
+            }
 
             return usuarioRepository.getUsuariosByEmpresa_Id(empresa.getId())
                     .stream()
                     .map(UsuarioResponse::new)
                     .collect(Collectors.toList());
 
-//            return usuarioRepository.findAll()
-//                    .stream()
-//                    .filter(a-> a.getEmpresa().getId().equals(empresa.getId()))
-//                    .map(UsuarioResponse::new)
-//                    .collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -74,16 +76,27 @@ public class UsuarioService {
 
 
     public UsuarioResponse BuscarUsuarioPorId(Long id) {
-        try{
+        try {
+            Usuario usuarioLogado = (Usuario) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
 
-            Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Usuario usuario;
 
-            var usuario = usuarioRepository.findByIdAndEmpresa_Id(id,usuarioLogado.getEmpresa().getId()).orElse(null);
-            return new UsuarioResponse(usuario);
+            if (usuarioLogado.getEmpresa() == null) {
+                usuario = usuarioRepository.findById(id).orElse(null);
+            } else {
+                usuario = usuarioRepository
+                        .findByIdAndEmpresa_Id(id, usuarioLogado.getEmpresa().getId())
+                        .orElse(null);
+            }
+
+            return usuario == null ? null : new UsuarioResponse(usuario);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public boolean AterarUsuario(Long id, UsuarioRequest usuario) {
@@ -116,17 +129,27 @@ public class UsuarioService {
     public Long SalvarUsuarioAdm(UsuarioAdmRequest usuario) {
         try {
 
-            if(usuario.secretKey().equals( secret)) {
-                return usuarioRepository.save(new Usuario(usuario)).getId();
-            }else
-            {
+            if (usuario.secretKey().equals(secret)) {
+
+                Empresa empresa = new Empresa();
+                empresa.setNomeFantasia(usuario.nomeCondominio());
+                empresa.setRazaoSocial(usuario.nomeCondominio());
+                empresa.setCNPJ(usuario.cnpj());
+
+                Empresa empresaSalva = empresaRepository.save(empresa);
+
+                Usuario novoAdmin = new Usuario(usuario);
+                novoAdmin.setEmpresa(empresaSalva);
+
+                return usuarioRepository.save(novoAdmin).getId();
+
+            } else {
                 return 0L;
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public boolean AlterarStatus(Long id, AlterarStatusRequest statusRequest) {
