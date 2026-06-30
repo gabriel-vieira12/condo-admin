@@ -1,15 +1,14 @@
 package com.senac.condo_admin.application.services;
 
+import com.senac.condo_admin.infra.config.external.EmailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
 
     @Autowired
-    private JavaMailSender mailSender;
+    private EmailRepository emailRepository;
 
     public void enviarEmailOcorrenciaGrave(
             String emailDestino,
@@ -17,21 +16,17 @@ public class EmailService {
             String descricao,
             String unidade
     ) {
-        SimpleMailMessage mensagem = new SimpleMailMessage();
+        String assunto = "Ocorrência Grave registrada no CondoAdmin";
 
-        mensagem.setTo(emailDestino);
-        mensagem.setSubject("🚨 Ocorrência Grave registrada no CondoAdmin");
-
-        mensagem.setText(
+        String texto =
                 "Olá, " + nomeSindico + "!\n\n" +
                         "Uma nova ocorrência classificada como GRAVE foi registrada no seu condomínio.\n\n" +
                         "Descrição: " + descricao + "\n" +
                         "Unidade: " + unidade + "\n\n" +
                         "Acesse o CondoAdmin para acompanhar e gerenciar essa ocorrência.\n\n" +
                         "Atenciosamente,\n" +
-                        "CondoAdmin"
-        );
+                        "CondoAdmin";
 
-        mailSender.send(mensagem);
+        emailRepository.enviar(emailDestino, assunto, texto);
     }
 }
