@@ -38,12 +38,12 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.BuscarUsuarioPorId(id));
     }
 
-    @PostMapping
-    @Operation(summary = "Criar usuario",description = "Metodo resposavel por criar usuário")
-    public ResponseEntity<Long> salvar (@RequestBody UsuarioRequest usuario){
-
-        return ResponseEntity.ok(usuarioService.SalvarUsuario(usuario));
-    }
+//    @PostMapping
+//    @Operation(summary = "Criar usuario",description = "Metodo resposavel por criar usuário")
+//    public ResponseEntity<Long> salvar (@RequestBody UsuarioRequest usuario){
+//
+//        return ResponseEntity.ok(usuarioService.SalvarUsuario(usuario));
+//    }
 
     @PostMapping("/adm")
     @Operation(summary = "Criar usuario adm",description = "Metodo resposavel por criar usuário")

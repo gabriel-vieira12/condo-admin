@@ -24,7 +24,7 @@ public class AuthController {
     private UsuarioService usuarioService;
 
     @PostMapping("/login")
-    @Operation(description = "Valida senha asdhaukshd 50 carecteres, calcula longitudo com latitud!",summary = "Login")
+    @Operation(description = "Serviço responsável pelo login dos usuários e geração do token JWT",summary = "Login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
 
 
