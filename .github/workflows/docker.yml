@@ -1,0 +1,42 @@
+name: CI / CD Docker Build and Test
+
+on:
+  push:
+    branches: ["main"]
+
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkou do codigo
+        uses: actions/checkout@v3
+
+      - name: Verificar Docker
+        run: |
+          docker --version
+          docker compose version
+
+      - name: 🐋 Subir ambiente com Docker Compose
+        working-directory: ./backend
+        run: docker compose up -d
+
+      - name: ⏱️ Aguardar os contêineres estabilizarem
+        run: |
+          echo "Aguardando 30 segundos para os serviços iniciarem..."
+          sleep 60
+
+      - name: 🩺 Verificar status dos contêineres
+        working-directory: ./backend
+        run: |
+          docker compose ps
+          docker compose logs postgres-db || echo "Serviço 'postgres-db' não encontrado."
+          docker compose logs api-spring || echo "Serviço 'api-spring' não encontrado."
+
+      - name: 📞 Realizar teste de saúde na API
+        run: curl --fail http://localhost:8080/swagger-ui/index.html
+
+      - name: 🛑 Parar os contêineres após o teste
+        if: always()
+        working-directory: ./backend
+        run: docker compose down

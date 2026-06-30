@@ -1,0 +1,9 @@
+SELECT * FROM empresa;
+SELECT * FROM usuario;
+SELECT * FROM unidade;
+SELECT * FROM morador;
+SELECT * FROM ocorrencia;
+
+TRUNCATE TABLE ocorrencia, morador, unidade, usuario, empresa RESTART IDENTITY CASCADE;
+
+mailtrap

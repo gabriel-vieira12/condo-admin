@@ -1,0 +1,29 @@
+package com.senac.condo_admin.domain.entities;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "ocorrencia")
+public class Ocorrencia {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String descricao;
+
+    private String gravidade;
+
+    private String status;
+
+    private Long unidadeId;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "empresa_id", referencedColumnName = "id")
+    private Empresa empresa;
+}
