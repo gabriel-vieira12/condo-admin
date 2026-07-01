@@ -88,12 +88,16 @@ public class OcorrenciaController {
         Ocorrencia ocorrenciaSalva = ocorrenciaRepository.save(ocorrencia);
 
         if ("GRAVE".equalsIgnoreCase(ocorrenciaSalva.getGravidade())) {
-            emailService.enviarEmailOcorrenciaGrave(
-                    usuarioLogado.getEmail(),
-                    usuarioLogado.getNome(),
-                    ocorrenciaSalva.getDescricao(),
-                    "ID da unidade: " + ocorrenciaSalva.getUnidadeId()
-            );
+            try {
+                emailService.enviarEmailOcorrenciaGrave(
+                        usuarioLogado.getEmail(),
+                        usuarioLogado.getNome(),
+                        ocorrenciaSalva.getDescricao(),
+                        "ID da unidade: " + ocorrenciaSalva.getUnidadeId()
+                );
+            } catch (Exception e) {
+                System.out.println("Erro ao enviar e-mail de ocorrência grave: " + e.getMessage());
+            }
         }
 
         return ResponseEntity.ok(ocorrenciaSalva.getId());
