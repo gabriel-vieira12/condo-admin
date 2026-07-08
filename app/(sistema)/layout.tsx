@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 
 export default function SistemaLayout({ children }:
   { children: React.ReactNode }) {
-
   const usuario = useSelector((state :RootState) => state.auth.usuario);
   const router = useRouter();
 

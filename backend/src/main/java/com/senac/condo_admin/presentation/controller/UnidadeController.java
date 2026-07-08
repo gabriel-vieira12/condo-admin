@@ -30,8 +30,7 @@ public class UnidadeController {
     public ResponseEntity<UnidadeResponse> buscarPorId(@PathVariable Long id) {
         var unidade = unidadeService.BuscarPorId(id);
 
-        return unidade != null
-                ? ResponseEntity.ok(unidade) : ResponseEntity.notFound().build();
+        return unidade != null ? ResponseEntity.ok(unidade) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
@@ -39,8 +38,7 @@ public class UnidadeController {
     public ResponseEntity<Long> salvar(@RequestBody UnidadeRequest request) {
         var id = unidadeService.Salvar(request);
 
-        return id != null
-                ? ResponseEntity.ok(id) : ResponseEntity.badRequest().build();
+        return id != null ? ResponseEntity.ok(id) : ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/{id}")
@@ -48,7 +46,6 @@ public class UnidadeController {
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody UnidadeRequest request) {
         var atualizado = unidadeService.Atualizar(id, request);
 
-        return atualizado
-                ? ResponseEntity.ok("Atualizado com sucesso!") : ResponseEntity.notFound().build();
+        return atualizado ? ResponseEntity.ok("Atualizado com sucesso!") : ResponseEntity.notFound().build();
     }
 }

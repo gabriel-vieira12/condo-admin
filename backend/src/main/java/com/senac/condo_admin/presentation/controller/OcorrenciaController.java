@@ -30,8 +30,7 @@ public class OcorrenciaController {
     public ResponseEntity<OcorrenciaResponse> buscarPorId(@PathVariable Long id) {
         var ocorrencia = ocorrenciaService.BuscarPorId(id);
 
-        return ocorrencia != null
-                ? ResponseEntity.ok(ocorrencia) : ResponseEntity.notFound().build();
+        return ocorrencia != null ? ResponseEntity.ok(ocorrencia) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
@@ -39,8 +38,7 @@ public class OcorrenciaController {
     public ResponseEntity<Long> salvar(@RequestBody OcorrenciaRequest request) {
         var id = ocorrenciaService.Salvar(request);
 
-        return id != null
-                ? ResponseEntity.ok(id) : ResponseEntity.badRequest().build();
+        return id != null ? ResponseEntity.ok(id) : ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/{id}")
@@ -48,7 +46,6 @@ public class OcorrenciaController {
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody OcorrenciaRequest request) {
         var atualizado = ocorrenciaService.Atualizar(id, request);
 
-        return atualizado
-                ? ResponseEntity.ok("Atualizado com sucesso!") : ResponseEntity.notFound().build();
+        return atualizado ? ResponseEntity.ok("Atualizado com sucesso!") : ResponseEntity.notFound().build();
     }
 }

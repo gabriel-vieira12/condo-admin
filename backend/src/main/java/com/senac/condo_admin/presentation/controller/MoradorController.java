@@ -30,8 +30,7 @@ public class MoradorController {
     public ResponseEntity<MoradorResponse> buscarPorId(@PathVariable Long id) {
         var morador = moradorService.BuscarPorId(id);
 
-        return morador != null
-                ? ResponseEntity.ok(morador) : ResponseEntity.notFound().build();
+        return morador != null ? ResponseEntity.ok(morador) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
@@ -39,8 +38,7 @@ public class MoradorController {
     public ResponseEntity<Long> salvar(@RequestBody MoradorRequest request) {
         var id = moradorService.Salvar(request);
 
-        return id != null
-                ? ResponseEntity.ok(id) : ResponseEntity.badRequest().build();
+        return id != null ? ResponseEntity.ok(id) : ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/{id}")
@@ -48,7 +46,6 @@ public class MoradorController {
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody MoradorRequest request) {
         var atualizado = moradorService.Atualizar(id, request);
 
-        return atualizado
-                ? ResponseEntity.ok("Atualizado com sucesso!") : ResponseEntity.notFound().build();
+        return atualizado ? ResponseEntity.ok("Atualizado com sucesso!") : ResponseEntity.notFound().build();
     }
 }

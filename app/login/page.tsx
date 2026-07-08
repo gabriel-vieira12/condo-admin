@@ -19,26 +19,16 @@ export default function LoginPage() {
         try {
 
             const loginResult = await loginService({email:email,senha:senha});
-            debugger;
             if (!loginResult.token) {
                 alert("Usuario ou senha invalido!")
                 return;
             }
             var token = loginResult.token;
             
-           
-            dispatch(setToken(
-                {
-                    token: token
-                }
-            ));
+            dispatch(setToken({token: token}));
             const usuario = await buscarUsuarioLogado();
 
-             dispatch(setUsuario(
-                {
-                    usuario: {...usuario}
-                }
-            ));
+             dispatch(setUsuario({usuario: {...usuario}}));
 
 
         } catch (error) {

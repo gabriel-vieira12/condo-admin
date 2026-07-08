@@ -27,6 +27,7 @@ export default function ChamadosPage() {
     (state: RootState) => state.filtroOcorrencia.status
   );
 
+
   useEffect(() => {
     carregarDados();
   }, []);
