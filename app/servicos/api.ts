@@ -26,15 +26,13 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-    if (error.response?.status === 401 || error.response?.status === 403) {
-        store.dispatch(logout());
 
-        if (typeof window !== "undefined") {
-            window.location.href = "/login";
+        if (error.response?.status === 401 || error.response?.status === 403) {
+            store.dispatch(logout());
         }
-    }
 
         return Promise.reject(error);
+    
     }
 );
 
